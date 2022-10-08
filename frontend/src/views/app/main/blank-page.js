@@ -121,18 +121,6 @@ const BlankPage = ({ match, intl }) => {
                     </FormText>
                   </FormGroup>
 
-                  {/* <FormGroup>
-                    <Label for="passwordBasic">
-                      <IntlMessages id="forms.password" />
-                    </Label>
-                    <Input
-                      type="password"
-                      name="passwordBasic"
-                      id="passwordBasic"
-                      placeholder={messages['forms.password']}
-                    />
-                  </FormGroup> */}
-
                   <FormGroup>
                     <CustomInput
                       type="checkbox"

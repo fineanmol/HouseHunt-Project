@@ -17,10 +17,17 @@ const Applications = React.lazy(() =>
 const Ui = React.lazy(() => import(/* webpackChunkName: "ui" */ './ui'));
 const Menu = React.lazy(() => import(/* webpackChunkName: "menu" */ './menu'));
 const BlankPage = React.lazy(() =>
-  import(/* webpackChunkName: "blank-page" */ './blank-page')
+  import(/* webpackChunkName: "blank-page" */ './main/blank-page')
+);
+const HomePage = React.lazy(() =>
+  import(/* webpackChunkName: "blank-page" */ './main/home-page')
+);
+const SearchPage = React.lazy(() =>
+  import(/* webpackChunkName: "blank-page" */ './main/search-page')
 );
 
 const App = ({ match }) => {
+  console.log('[App-Match]', { match });
   return (
     <AppLayout>
       <div className="dashboard-wrapper">
@@ -59,6 +66,14 @@ const App = ({ match }) => {
             <Route
               path={`${match.url}/blank-pages`}
               render={(props) => <BlankPage {...props} />}
+            />
+            <Route
+              path={`${match.url}/home`}
+              render={(props) => <HomePage {...props} />}
+            />
+            <Route
+              path={`${match.url}/search/`}
+              render={(props) => <SearchPage {...props} />}
             />
             <Redirect to="/error" />
           </Switch>
