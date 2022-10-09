@@ -648,4 +648,13 @@ module.exports = {
   'wizard.prev': 'Back',
   'wizard.registered': 'Your registration completed successfully!',
   'wizard.async': 'Async save for 3 seconds!',
+
+  'forms.addFilter': 'Add Filter',
+  'form.area-code': 'Area Code',
+  'form.no-of-bedrooms': 'No of bedrooms',
+  'form.property-type': 'Property Type',
+  'form.radius': 'Radius',
+  'form.max-range': 'Max Range',
+  'alert.danger-emailText': 'Please Enter a Valid Email to Proceeds!',
+
 };

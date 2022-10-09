@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { useState } from 'react';
 import IntlMessages from 'helpers/IntlMessages';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import Breadcrumb from 'containers/navs/Breadcrumb';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
+
 import {
   Row,
   Card,
@@ -15,20 +16,47 @@ import {
   Button,
   FormText,
   Form,
+  Alert,
 } from 'reactstrap';
 import { injectIntl } from 'react-intl';
-
 import 'react-tagsinput/react-tagsinput.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'rc-switch/assets/index.css';
 import 'rc-slider/assets/index.css';
 import 'react-rater/lib/react-rater.css';
 
-const HomePage = ({ match, intl }) => {
+const HomePage = ({ match, intl, userEmail, setUserEmail }) => {
   const { messages } = intl;
   const history = useHistory();
-  // const navigate = useNavigate();
-  console.log({ match, history });
+  console.log({ history });
+  const [agreeCheckBox, setAgreeCheckBox] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  const handleSubmitButton = () => {
+    if (!validateEmail(userEmail)) {
+      setShowAlert(!validateEmail(userEmail));
+      // return (
+
+      // );
+      // alert('Please enter a valid email address');
+    }
+    if (!agreeCheckBox) {
+      alert('Please accept Terms and Conditions');
+    }
+    if (agreeCheckBox && validateEmail(userEmail)) {
+      history.push(`/app/search/`);
+    }
+    return <></>;
+  };
+
   return (
     <>
       <Row>
@@ -53,39 +81,33 @@ const HomePage = ({ match, intl }) => {
                     type="email"
                     name="email"
                     id="exampleEmail"
+                    tabIndex={-1}
+                    key="email-id"
                     placeholder={messages['forms.email']}
+                    onChange={(e) => setUserEmail(e.target.value)}
+                    value={userEmail}
                   />
+
                   <FormText color="muted">
                     <IntlMessages id="forms.email-muted" />
                   </FormText>
                 </FormGroup>
-
-                {/* <FormGroup>
-                  <Label for="passwordBasic">
-                    <IntlMessages id="forms.password" />
-                  </Label>
-                  <Input
-                    type="password"
-                    name="passwordBasic"
-                    id="passwordBasic"
-                    placeholder={messages['forms.password']}
-                  />
-                </FormGroup> */}
-
+                <Alert color="danger" className="rounded" isOpen={showAlert}>
+                  <IntlMessages id="alert.danger-emailText" />
+                </Alert>
                 <FormGroup>
                   <CustomInput
                     type="checkbox"
                     id="exampleCustomCheckbox"
                     label="I agree with Terms & Conditions"
+                    onChange={(e) => setAgreeCheckBox(e.target.value)}
                   />
                 </FormGroup>
-
                 <Button
                   color="primary"
                   className="mt-4"
                   onClick={() => {
-                    window.location.href = 'search';
-                    // history.push(`${match.url}/search/`);
+                    handleSubmitButton();
                   }}
                 >
                   <IntlMessages id="forms.proceeds" />
@@ -99,4 +121,4 @@ const HomePage = ({ match, intl }) => {
   );
 };
 
-export default injectIntl(HomePage);
+export default withRouter(injectIntl(HomePage));

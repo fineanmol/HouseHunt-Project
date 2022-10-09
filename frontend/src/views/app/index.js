@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -23,11 +23,15 @@ const HomePage = React.lazy(() =>
   import(/* webpackChunkName: "blank-page" */ './main/home-page')
 );
 const SearchPage = React.lazy(() =>
-  import(/* webpackChunkName: "blank-page" */ './main/search-page')
+  import(/* webpackChunkName: "search-page" */ './main/search-page')
+);
+const ThankYouPage = React.lazy(() =>
+  import(/* webpackChunkName: "thankyou-page" */ './main/thankyou-page')
 );
 
 const App = ({ match }) => {
-  console.log('[App-Match]', { match });
+  const [userEmail, setUserEmail] = useState('');
+  console.log('[App-Match]', { match, userEmail });
   return (
     <AppLayout>
       <div className="dashboard-wrapper">
@@ -69,11 +73,25 @@ const App = ({ match }) => {
             />
             <Route
               path={`${match.url}/home`}
-              render={(props) => <HomePage {...props} />}
+              render={(props) => (
+                <HomePage
+                  {...props}
+                  setUserEmail={setUserEmail}
+                  userEmail={userEmail}
+                />
+              )}
             />
             <Route
               path={`${match.url}/search/`}
-              render={(props) => <SearchPage {...props} />}
+              render={(props) => (
+                <SearchPage {...props} userEmail={userEmail} />
+              )}
+            />
+            <Route
+              path={`${match.url}/thank-you/`}
+              render={(props) => (
+                <ThankYouPage {...props} userEmail={userEmail} />
+              )}
             />
             <Redirect to="/error" />
           </Switch>
